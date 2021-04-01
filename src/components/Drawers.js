@@ -22,15 +22,15 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function Drawers() {
+export default function Drawers({ open }) {
 	const classes = useStyles();
 	const [state, setState] = React.useState({
 		top: false,
-		left: false,
+		left: { open },
 		bottom: false,
 		right: false,
 	});
-
+	const [drawer, setDrawer] = React.useState({ open });
 	const toggleDrawer = (anchor, open) => (event) => {
 		if (
 			event.type === "keydown" &&
@@ -83,16 +83,18 @@ export default function Drawers() {
 
 	return (
 		<div>
-			{["left", "right", "top", "bottom"].map((anchor) => (
+			{["left"].map((anchor) => (
 				<React.Fragment key={anchor}>
-					<Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-					<Drawer
-						anchor={anchor}
-						open={state[anchor]}
-						onClose={toggleDrawer(anchor, false)}
-					>
-						{list(anchor)}
-					</Drawer>
+					{/* /<Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
+					{open && (
+						<Drawer
+							anchor={anchor}
+							open={state[anchor]}
+							onClose={toggleDrawer(anchor, false)}
+						>
+							{list(anchor)}
+						</Drawer>
+					)}
 				</React.Fragment>
 			))}
 		</div>
